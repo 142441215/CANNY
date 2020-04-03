@@ -2,11 +2,31 @@
 //
 
 #include <iostream>
-
-int main()
-{
-    std::cout << "Hello World!\n";
+#include <opencv2/opencv.hpp>
+using namespace cv;
+using namespace std;
+int main() {
+	VideoCapture cap(0);
+	while (1)
+	{
+		cv::Mat InMat;
+		cv::Mat xMat;
+		cv::Mat yMat;
+		cv::Mat OutMat1;
+		cv::Mat OutMat2;
+		cap >> InMat;
+		Canny(InMat, OutMat1, 50, 150);
+		Sobel(InMat, xMat, CV_16SC1, 1, 0, 3);
+		Sobel(InMat, yMat, CV_16SC1, 0, 1, 3);
+		Canny(xMat, yMat, OutMat2, 50, 150);
+		convertScaleAbs(OutMat1, OutMat1);
+		imshow("InMat", InMat);
+		imshow("OutMat1", OutMat1);
+		imshow("OutMat2", OutMat2);
+		waitKey(30);
+	}
 }
+
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
 // 调试程序: F5 或调试 >“开始调试”菜单
